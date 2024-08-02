@@ -34,7 +34,7 @@ export const signup = async(req,res) => {
             username,
             password:hashedPassword,
             gender,
-            profilePic: gender !== 'Male' ? boyProfilePic : girProfilePic
+            profilePic: gender === 'Female' ? boyProfilePic : girProfilePic
         });
 
         generateTokenAndSetCookie(newUser._id,res);
@@ -72,7 +72,8 @@ export const login = async(req,res) => {
             return res.status(400)
             .json({
                 success:false,
-                message:"Invalid Credentials..."
+                message:"Invalid Credentials...",
+                error:"Invalid Credentials..."
             });
         }
 
@@ -82,13 +83,18 @@ export const login = async(req,res) => {
         .json({
             success:true,
             message:"Logged In Successfully...",
+            _id: user._id,
+			fullName: user.fullName,
+			username: user.username,
+			profilePic: user.profilePic
         })
     } catch (error) {
         console.log(error.message);
         res.status(500)
         .json({
             success:false,
-            message:"Error! While Login"
+            message:"Error! While Login",
+            error:"Internal Server Error"
         })
     }
 }
@@ -99,7 +105,7 @@ export const logout = (req,res) => {
         res.status(200)
         .json({
             success:true,
-            message:"Looged Out Successfully..."
+            message:"Logged Out Successfully..."
         })
         
     } catch (error) {
@@ -107,7 +113,8 @@ export const logout = (req,res) => {
         res.status(500)
         .json({
             success:false,
-            message:"Error! While Logout"
+            message:"Error! While Logout",
+            error:"Internal Server Error..."
         })
     }
 }

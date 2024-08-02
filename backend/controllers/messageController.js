@@ -34,11 +34,7 @@ export const sendMessage = async(req,res) => {
         await Promise.all([conversation.save(),newMessage.save()]);
 
         res.status(201)
-        .json({
-            success:true,
-            message:"Message sent Successfully...",
-            newMessage
-        })
+        .json(newMessage)
     } catch (error) {
         console.log(error.message);
         res.status(500)
@@ -60,19 +56,11 @@ export const getMessages = async(req,res) => {
 
         if(!conversation){
             return res.status(200)
-            .json({
-                success:true,
-                message:"No Conversation...",
-                messages: []
-            });
+            .json([]);
         }
 
         res.status(200)
-        .json({
-            success:true,
-            message:"Message fetched successfully...",
-            messages:conversation.messages
-        });
+        .json(conversation.messages);
 
     } catch (error) {
         console.log(error.message);
