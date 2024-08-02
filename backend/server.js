@@ -5,8 +5,8 @@ import authRoutes from './routes/authRoutes.js';
 import messageRoutes from './routes/messageRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import { dbConnect } from './dbConnect.js';
+import { app, server } from './socket/socket.js';
 
-const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
@@ -21,7 +21,7 @@ app.use("/api/v1/users",userRoutes);
     try {
         await dbConnect(process.env.MONGO_URI);
         console.log("Database Connected Successfully...");
-        app.listen(PORT,console.log(`Server running at port ${PORT}`));
+        server.listen(PORT,console.log(`Server running at port ${PORT}`));
     } catch (error) {
         console.log("Error! While Connecting Database",error.message);
     }
